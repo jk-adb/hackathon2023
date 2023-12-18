@@ -39,7 +39,34 @@
 
   /* nav height */
   --nav-height: 64px;
+  
+  --pana-font-size-heading-extralarge: 44px;
+  --pana-font-size-heading-xl: 44px;
+  --pana-font-size-heading-large: 32px;
+  --pana-font-size-heading-l: 32px;
+  --pana-font-size-heading-medium: 26px;
+  --pana-font-size-heading-m: 26px;
+  --pana-font-size-heading-small: 20px;
+  --pana-font-size-heading-s: 20px;
 
+  --pana-font-size-extralarge: 26px;
+  --pana-font-size-xl: 26px;
+  --pana-font-size-large: 20px;
+  --pana-font-size-l: 20px;
+  --pana-font-size-medium: 16px;
+  --pana-font-size-m: 16px;
+  --pana-font-size-small: 14px;
+  --pana-font-size-s: 14px;
+  --pana-font-size-extrasmall: 12px;
+  --pana-font-size-xs: 12px;
+
+  --pana-font-style: normal;
+  --pana-font-weight: 400;
+  --pana-font-family: "Noto Sans JP Thin", "Noto Sans JP", "Noto Sans Display", sans-serif;
+  --pana-line-height: 150%;
+  --pana-color-black-01: rgb(26, 26, 26);
+  --pana-color-black-08: rgb(204, 204, 204);
+  --pana-color-black-10: rgb(242, 242, 242);
 }
 
 @font-face {
@@ -50,7 +77,7 @@
 }
 
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   :root {
     --heading-font-size-xxl: 60px;
     --heading-font-size-xl: 48px;
@@ -64,11 +91,14 @@
 body {
   font-size: var(--body-font-size-m);
   margin: 0;
+  padding: 0;
+  width: 100%;
   font-family: var(--body-font-family);
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
+  background-color: var(--pana-color-black-10);
 }
 
 body.appear {
@@ -76,7 +106,7 @@ body.appear {
 }
 
 header {
-  height: var(--nav-height);
+  /* height: var(--nav-height); */
 }
 
 h1, h2, h3,
@@ -213,8 +243,16 @@ main blockquote p::after {
 
 main img {
   max-width: 100%;
+  margin: auto;
   width: auto;
   height: auto;
+}
+
+main p {
+  width: auto;
+  margin: auto;
+  height: auto;
+  padding: 0;
 }
 
 .icon {
@@ -229,23 +267,31 @@ main img {
 }
 
 main .section {
-  padding: 64px 16px;
+  /* padding: 64px 16px; */
 }
 
-@media (min-width: 600px) {
-  main .section {
+@media (width >= 600px) {
+  /* main .section {
     padding: 64px 32px;
-  }
+  } */
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .section > div {
-    max-width: 1200px;
+    /* max-width: 1200px; */
+    widht: 100%;
     margin: auto;
   }
 }
 
 /* section metadata */
 main .section.highlight {
-  background-color: var(--highlight-background-color);
+  /* background-color: var(--highlight-background-color); */
+}
+
+p:has(picture) {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
 }

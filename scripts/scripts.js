@@ -1,13 +1,15 @@
 import {
   sampleRUM,
   buildBlock,
-  loadHeader,
-  loadFooter,
+  // loadHeader,
+  // loadFooter,
   decorateButtons,
+  decorateParagraphs,
   decorateIcons,
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
+  decorateHeadings,
   waitForLCP,
   loadBlocks,
   loadCSS,
@@ -64,6 +66,8 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
+  decorateHeadings(main);
+  decorateParagraphs(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
@@ -105,8 +109,8 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  // loadHeader(doc.querySelector('header'));
+  // loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();

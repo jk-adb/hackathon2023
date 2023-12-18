@@ -362,34 +362,84 @@ function decorateTemplateAndTheme() {
 function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
+
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {
         if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
-          up.classList.add('button-container');
+          let wc = document.createElement('pana-button');
+          wc.textContent = a.textContent;
+          if (a.firstElementChild && a.firstElementChild.classList.length > 1) {
+            const iconClassName = a.firstElementChild.classList[1];
+            const found = iconClassName.match(/-(.+)$/);
+            if (found && found.length > 1) {
+              wc.setAttribute('iconname', found[1]);
+            }
+          }
+          up.after(wc);
+          up.remove();
         }
         if (
           up.childNodes.length === 1
           && up.tagName === 'STRONG'
           && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
+          && (twoup.tagName === 'P' || twoup.tagName === 'DIV')
         ) {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
+          let wc = document.createElement('pana-link');
+          if (a.firstElementChild && a.firstElementChild.classList.length > 1) {
+            const iconClassName = a.firstElementChild.classList[1];
+            const found = iconClassName.match(/-(.+)$/);
+            if (found && found.length > 1) {
+              wc.textContent = a.textContent;
+              wc.setAttribute('display', 'block');
+              wc.setAttribute('iconname', found[1]);
+              twoup.after(wc);
+              twoup.remove();
+            }
+          }
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
-        }
+        // if (
+        //   up.childNodes.length === 1
+        //   && up.tagName === 'EM'
+        //   && twoup.childNodes.length === 1
+        //   && twoup.tagName === 'P'
+        // ) {
+        //   a.className = 'button secondary';
+        //   twoup.classList.add('button-container');
+        // }
       }
     }
+
+    // if (a.href !== a.textContent) {
+    //   const up = a.parentElement;
+    //   const twoup = a.parentElement.parentElement;
+    //   if (!a.querySelector('img')) {
+    //     if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
+    //       a.className = 'button'; // default
+    //       up.classList.add('button-container');
+    //     }
+    //     if (
+    //       up.childNodes.length === 1
+    //       && up.tagName === 'STRONG'
+    //       && twoup.childNodes.length === 1
+    //       && twoup.tagName === 'P'
+    //     ) {
+    //       a.className = 'button primary';
+    //       twoup.classList.add('button-container');
+    //     }
+    //     if (
+    //       up.childNodes.length === 1
+    //       && up.tagName === 'EM'
+    //       && twoup.childNodes.length === 1
+    //       && twoup.tagName === 'P'
+    //     ) {
+    //       a.className = 'button secondary';
+    //       twoup.classList.add('button-container');
+    //     }
+    //   }
+    // }
+
   });
 }
 
@@ -418,6 +468,48 @@ function decorateIcons(element, prefix = '') {
   const icons = [...element.querySelectorAll('span.icon')];
   icons.forEach((span) => {
     decorateIcon(span, prefix);
+  });
+}
+
+function decorateParagraphs(element, prefix = '') {
+  const paragraphs = [...element.querySelectorAll('p')];
+  paragraphs.forEach((p) => {
+    console.log("---------------------");
+    console.log(p);
+    console.log(p.childNodes);
+    let blockNodeCount = 0;
+    p.childNodes.forEach((node) => {
+      console.log(node.nodeName);
+      if (node.nodeName != '#text' && node.nodeName != 'BR') {
+        blockNodeCount++;
+      }
+    })
+    console.log(blockNodeCount);
+    if (blockNodeCount < 1) {
+      let wc = document.createElement('pana-text');
+      wc.textContent = p.textContent;
+      p.after(wc);
+      p.remove();
+      console.log("created!");
+    }
+  });
+}
+
+function decorateHeading(element, headingTag) {
+  let wc = document.createElement('pana-title');
+  wc.textContent = element.textContent;
+  wc.setAttribute('size', headingTag);
+  element.after(wc);
+  element.remove();
+}
+
+function decorateHeadings(element, prefix = '') {
+  const headingTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  headingTags.forEach((headingTag) => {
+    const headingElement = [...element.querySelectorAll(headingTag)];
+    headingElement.forEach((h) => {
+      decorateHeading(h, headingTag);
+    });
   });
 }
 
@@ -683,9 +775,11 @@ export {
   decorateBlock,
   decorateBlocks,
   decorateButtons,
+  decorateParagraphs,
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
+  decorateHeadings,
   fetchPlaceholders,
   getMetadata,
   loadBlock,
